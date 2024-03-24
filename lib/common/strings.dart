@@ -11,12 +11,16 @@ const String appTitle = "Palitest Palindrome Checker";
 const String hintText = "Enter or paste text here to check for palindrome.";
 const String isPalindromeText = "It's a palindrome!";
 const String notPalindromeText = "Not a palindrome";
+const String pasteActionTooltip = "Paste from clipboard";
+const String samplePalindromesActionTooltip = "Sample palindromes";
 const String ignoreCaseText = "Ignore Case";
 const String ignoreSpacingText = "Ignore Spacing";
 const String ignoreNonAlphanumeric = "Ignore Non-Alphanumeric";
-const String showExamplesText = "Show Palindrome Examples";
-const String pasteActionTooltip = "Paste";
-const String shareActionTooltip = "Share";
+// const String shareActionTooltip = "Share";
+
+// Sample palindromes dialog
+
+const String samplePalindromesDialogTitle = "Select a sample palindrome";
 
 // Sponsor badge
 

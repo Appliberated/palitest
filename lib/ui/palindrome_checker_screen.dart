@@ -12,6 +12,7 @@ import '../utils/utils.dart' as utils;
 import '../common/urls.dart' as urls;
 import 'palindrome_status.dart';
 import 'palindrome_text_field.dart';
+import 'sample_palindromes_dialog.dart';
 import 'sponsor_badge.dart';
 
 /// The main screen of the app that allows the user to check if a text is a palindrome.
@@ -64,18 +65,31 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     }
   }
 
-  void _shareResult() async {
-    final text = _textController.text;
-    final resultText = _isPalindrome ? strings.isPalindromeText : strings.notPalindromeText;
-    final content = "$text\n\n$resultText";
-    // await SharePlus.instance.share(content, subject: "Palindrome Check Result");
+  /// Shows a dialog with a list of sample palindromes, and lets the user select one to check.
+  Future<void> _showSamplePalindromes() async {
+    final String? sample = await showSamplePalindromesDialog(context);
+    if (sample != null) {
+      _textController.text = sample;
+      _checkPalindrome();
+    }
   }
+
+  // TODO: Add Share functionality
+  // void _shareResult() async {
+  //   final text = _textController.text;
+  //   final resultText = _isPalindrome ? strings.isPalindromeText : strings.notPalindromeText;
+  //   final content = "$text\n\n$resultText";
+  //   // await SharePlus.instance.share(content, subject: "Palindrome Check Result");
+  // }
 
   /// Called when the user taps an app bar icon button or menu item.
   void _appBarAction(_AppBarActions action) {
     switch (action) {
       case _AppBarActions.paste:
         _pasteText();
+        break;
+      case _AppBarActions.samplePalindromes:
+        _showSamplePalindromes();
         break;
       case _AppBarActions.ignoreCase:
         SettingsProvider().ignoreCase = !SettingsProvider().ignoreCase;
@@ -156,6 +170,7 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
 /// The available actions that can be performed from the app bar.
 enum _AppBarActions {
   paste,
+  samplePalindromes,
   ignoreCase,
   ignoreSpacing,
   ignoreNonAlphanumeric,
@@ -194,6 +209,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Icons.paste),
           tooltip: strings.pasteActionTooltip,
           onPressed: () => onAppBarAction?.call(_AppBarActions.paste),
+        ),
+        // The Sample Palindromes icon button
+        IconButton(
+          icon: const Icon(Icons.list),
+          tooltip: strings.samplePalindromesActionTooltip,
+          onPressed: () => onAppBarAction?.call(_AppBarActions.samplePalindromes),
         ),
         PopupMenuButton<_AppBarActions>(
           onSelected: onAppBarAction,
