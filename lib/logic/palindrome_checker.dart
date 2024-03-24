@@ -1,3 +1,6 @@
+// Copyright (c) 2024 Appliberated (https://www.appliberated.com/). All rights reserved.
+// Use of this source code is governed by a user license that can be found in the LICENSE file.
+
 /// Check if the given [text] is a palindrome.
 ///
 /// When [ignoreCase] is true, the text is converted to lowercase before checking. When
@@ -10,7 +13,7 @@
   String text, {
   bool ignoreCase = true,
   bool ignoreSpacing = true,
-  bool ignoreNonWord = true,
+  bool ignoreNonAlphanumeric = true,
 }) {
   // Empty string is considered a palindrome
   if (text.isEmpty) return (true, text);
@@ -27,9 +30,10 @@
     processedText = processedText.replaceAll(RegExp(r"\s+"), "");
   }
 
-  // Remove non-word characters if needed
-  if (ignoreNonWord) {
-    processedText = processedText.replaceAll(RegExp(r"[^\w]"), "");
+  // Remove non-alphanumeric characters if needed
+  if (ignoreNonAlphanumeric) {
+    processedText = processedText.replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
+    // processedText = processedText.replaceAll(RegExp(r"[^\w]"), "");
   }
 
   int left = 0;
