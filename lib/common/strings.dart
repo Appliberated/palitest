@@ -18,3 +18,8 @@ const String ignoreNonAlphanumeric = "Ignore Non-Alphanumeric";
 const String showExamplesText = "Show Palindrome Examples";
 const String pasteButtonText = "Paste";
 const String shareButtonText = "Share";
+
+// Sponsor badge
+
+const String sponsorSubtitle = 'Brought to you by';
+const String sponsorTitle = 'East-Tec - Privacy since 1997';

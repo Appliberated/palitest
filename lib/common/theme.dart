@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // palindromes
 const Color _accentColor = Color(0xFF6A1B9A);
 
+const Color sponsorBackgroundColor = Color(0xFF00A4F9);
+
 ThemeData appTheme(Brightness brightness) {
   // A color that is white in the light theme and black in the dark theme
   final Color lightWhiteDarkBlack = brightness == Brightness.light ? Colors.white : Colors.black;
@@ -18,9 +20,13 @@ ThemeData appTheme(Brightness brightness) {
   );
   return ThemeData.from(
     colorScheme: colorScheme,
-    textTheme: Typography.material2018().black,
+    // textTheme: Typography.material2018().black,
   ).copyWith(
     appBarTheme: const AppBarTheme(
+      backgroundColor: _accentColor,
+      foregroundColor: Colors.white,
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: _accentColor,
       foregroundColor: Colors.white,
     ),

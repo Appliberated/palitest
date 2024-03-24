@@ -21,20 +21,28 @@ class PalindromeStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Text(
-          strings.palindromeStatus,
-          style: Theme.of(context).textTheme.titleLarge,
+        Card.filled(
+          color: isPalindrome ? Colors.green.shade50 : Colors.red.shade50,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              isPalindrome ? strings.isPalindromeText : strings.notPalindromeText,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: isPalindrome ? Colors.green : Colors.red,
+                  ),
+            ),
+          ),
         ),
-        Text(
-          normalizedText,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        Text(
-          isPalindrome ? strings.isPalindromeText : strings.notPalindromeText,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: isPalindrome ? Colors.green : Colors.red,
-              ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              normalizedText,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
         ),
       ],
     );

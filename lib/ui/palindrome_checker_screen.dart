@@ -9,6 +9,8 @@ import '../common/strings.dart' as strings;
 import '../logic/palindrome_checker.dart';
 import 'palindrome_status.dart';
 import 'palindrome_text_field.dart';
+import 'sponsor_badge.dart';
+import '../common/custom_icons.dart' as custom_icons;
 
 class PalindromeCheckerScreen extends StatefulWidget {
   const PalindromeCheckerScreen({super.key});
@@ -98,7 +100,9 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
                 onChanged: (_) => _checkPalindrome(),
               ),
             ),
-            const SizedBox(height: 16.0),
+            // Add a horizontal or vertical space between the text field and the status
+            // depending on the value of isLandscape
+            if (isLandscape) const SizedBox(width: 16.0) else const SizedBox(height: 16.0),
             Expanded(
               child: PalindromeStatus(
                 isPalindrome: _isPalindrome,
@@ -108,10 +112,30 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.share),
-        onPressed: () => _shareResult(),
-      ),
+      // floatingActionButton: const SponsorBadge(),
+      // floatingActionButton: FloatingActionButton(
+      //   child: const Icon(Icons.share),
+      //   onPressed: () => _shareResult(),
+      // ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   icon: const Icon(custom_icons.eastTecLogoMark),
+      //   // label: const Text(strings.broughtToYouByWide),
+      //   label: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: <Widget>[
+      //       Text(
+      //         strings.broughtToYouByWide,
+      //         style: Theme.of(context).textTheme.bodySmall,
+      //       ),
+      //       Text(
+      //         strings.eastTecWide,
+      //         style: Theme.of(context).textTheme.bodyMedium,
+      //       ),
+      //     ],
+      //   ),
+      //   onPressed: () => _shareResult(),
+      // ),
+      floatingActionButton: const SponsorBadge(),
     );
   }
 }
@@ -146,7 +170,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       title: const Text(strings.appTitle),
-      actions: [
+      actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.paste),
           onPressed: () => onAppBarAction?.call(_AppBarActions.paste),
