@@ -31,8 +31,10 @@
   }
 
   // Remove non-alphanumeric characters if needed
+  // Do not remove spaces, as there is a separate setting for that
   if (ignoreNonAlphanumeric) {
-    normalizedText = normalizedText.replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
+    normalizedText = normalizedText.replaceAll(RegExp(r"[^a-zA-Z0-9\s]"), "");
+    // normalizedText = normalizedText.replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
   }
 
   int left = 0;

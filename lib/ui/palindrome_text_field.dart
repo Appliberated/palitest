@@ -16,10 +16,10 @@ class PalindromeTextField extends StatelessWidget {
     // Return a text field widget, that fills the available space, both horizontally and vertically.
     // It should have a border all around, with a thickness of 2.0, and a color of Colors.deepPurple.
     return TextField(
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.deepPurple,
+            color: Theme.of(context).colorScheme.secondary,
             width: 2.0,
           ),
         ),

@@ -22,6 +22,7 @@ class PaliTestApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: strings.appTitle,
       theme: appTheme(Brightness.light),
+      // theme: appTheme(Brightness.dark),
       darkTheme: appTheme(Brightness.dark),
       home: const PalindromeCheckerScreen(),
     );

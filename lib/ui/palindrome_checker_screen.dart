@@ -47,21 +47,45 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     }
   }
 
+  void _shareResult() async {
+    final text = _textController.text;
+    final resultText = _isPalindrome ? strings.isPalindromeText : strings.notPalindromeText;
+    final content = "$text\n\n$resultText";
+    // await SharePlus.instance.share(content, subject: "Palindrome Check Result");
+  }
+
+  void _appBarAction(_AppBarActions action) {
+    switch (action) {
+      case _AppBarActions.paste:
+        _pasteText();
+        break;
+      case _AppBarActions.ignoreCase:
+        SettingsProvider().ignoreCase = !SettingsProvider().ignoreCase;
+        _checkPalindrome();
+        break;
+      case _AppBarActions.ignoreSpacing:
+        SettingsProvider().ignoreSpacing = !SettingsProvider().ignoreSpacing;
+        _checkPalindrome();
+        break;
+      case _AppBarActions.ignoreNonAlphanumeric:
+        SettingsProvider().ignoreNonAlphanumeric = !SettingsProvider().ignoreNonAlphanumeric;
+        _checkPalindrome();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Calculate isLandscape based on the available screen width and height
     final bool isLandscape = MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
 
+    // Theme.of(context).colorScheme.
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(strings.appTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.paste),
-            onPressed: _pasteText,
-          ),
-          // SettingsMenuWidget(),
-        ],
+      appBar: _AppBar(
+        onAppBarAction: _appBarAction,
+        ignoreCase: SettingsProvider().ignoreCase,
+        ignoreSpacing: SettingsProvider().ignoreSpacing,
+        ignoreNonAlphanumeric: SettingsProvider().ignoreNonAlphanumeric,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,6 +108,86 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.share),
+        onPressed: () => _shareResult(),
+      ),
     );
   }
+}
+
+/// The available actions that can be performed from the app bar.
+enum _AppBarActions {
+  paste,
+  ignoreCase,
+  ignoreSpacing,
+  ignoreNonAlphanumeric,
+}
+
+class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({
+    super.key, // ignore: unused_element
+    this.onAppBarAction,
+    required this.ignoreCase,
+    required this.ignoreSpacing,
+    required this.ignoreNonAlphanumeric,
+  });
+
+  final bool ignoreCase;
+  final bool ignoreSpacing;
+  final bool ignoreNonAlphanumeric;
+
+  /// Called when the user taps an app bar icon button or menu item.
+  final void Function(_AppBarActions)? onAppBarAction;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color mainColor = Theme.of(context).colorScheme.secondary;
+
+    return AppBar(
+      title: const Text(strings.appTitle),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.paste),
+          onPressed: () => onAppBarAction?.call(_AppBarActions.paste),
+        ),
+        // SettingsMenuWidget(),
+        PopupMenuButton<_AppBarActions>(
+          onSelected: onAppBarAction,
+          itemBuilder: (BuildContext context) => [
+            CheckedPopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.ignoreCase,
+              checked: ignoreCase,
+              child: const Text(strings.ignoreCaseText),
+            ),
+            CheckedPopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.ignoreSpacing,
+              checked: ignoreSpacing,
+              child: const Text(strings.ignoreSpacingText),
+            ),
+            CheckedPopupMenuItem<_AppBarActions>(
+              value: _AppBarActions.ignoreNonAlphanumeric,
+              checked: ignoreNonAlphanumeric,
+              child: const Text(strings.ignoreNonAlphanumeric),
+            ),
+          ],
+        ),
+      ],
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          // A linear gradient from mainColor to black until half the width of the app bar
+          // and back to mainColor until the end of the app bar, to suggest a sense of reflection
+          gradient: LinearGradient(
+            colors: [Colors.black, mainColor, Colors.black],
+            stops: const [0.0, 0.5, 1.0],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

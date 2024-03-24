@@ -4,7 +4,8 @@
 /// Contains all the user interface strings used in the app.
 library;
 
-const String appTitle = "Palindrome Checker";
+// const String appTitle = "Palindrome Checker";
+const String appTitle = "PaliTest - Palindrome Checker";
 const String hintText = "Enter or paste text here to check for palindrome.";
 
 const String palindromeStatus = "Palindrome Status";
