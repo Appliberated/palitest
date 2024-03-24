@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/settings.dart';
 import '../common/strings.dart' as strings;
 import '../logic/palindrome_checker.dart';
 import 'result_text_widget.dart';
@@ -23,10 +24,12 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
   Future<void> _checkPalindrome() async {
     final text = _textController.text;
     final settingsProvider = SettingsProvider();
-    final palResult = isPalindrome(text,
-        ignoreCase: settingsProvider.ignoreCase,
-        ignoreSpacing: settingsProvider.ignoreSpacing,
-        ignoreNonWord: settingsProvider.ignoreNonWord);
+    final palResult = isPalindrome(
+      text,
+      ignoreCase: settingsProvider.ignoreCase,
+      ignoreSpacing: settingsProvider.ignoreSpacing,
+      ignoreNonAlphanumeric: settingsProvider.ignoreNonAlphanumeric,
+    );
     setState(() {
       _isPalindrome = palResult.$1;
       _processedText = palResult.$2;
@@ -53,7 +56,7 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
             icon: const Icon(Icons.paste),
             onPressed: _pasteText,
           ),
-          SettingsMenuWidget(),
+          // SettingsMenuWidget(),
         ],
       ),
       body: Padding(

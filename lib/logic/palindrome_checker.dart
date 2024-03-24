@@ -4,7 +4,7 @@
 /// Check if the given [text] is a palindrome.
 ///
 /// When [ignoreCase] is true, the text is converted to lowercase before checking. When
-/// [ignoreSpacing] is true, all spaces are removed before checking. When [ignorePunctuation] is
+/// [ignoreSpacing] is true, all spaces are removed before checking. When [ignoreNonAlphanumeric] is
 /// true, all non-word characters are removed before checking.
 ///
 /// Returns a tuple with the first element as a boolean indicating if the text is a palindrome
