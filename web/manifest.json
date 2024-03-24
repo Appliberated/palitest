@@ -1,11 +1,11 @@
 {
-    "name": "palitest",
-    "short_name": "palitest",
+    "name": "Palitest",
+    "short_name": "Palitest",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#6F42C1",
+    "theme_color": "#6F42C1",
+    "description": "A real-time palindrome checker web app. Quickly identify palindromes (words or phrases that read the same forwards and backwards) using this convenient online tool.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
