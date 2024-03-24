@@ -89,27 +89,36 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
         ignoreSpacing: SettingsProvider().ignoreSpacing,
         ignoreNonAlphanumeric: SettingsProvider().ignoreNonAlphanumeric,
       ),
-      body: Padding(
+      body: Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.all(16.0),
-        child: Flex(
-          direction: isLandscape ? Axis.horizontal : Axis.vertical,
-          children: [
-            Expanded(
-              child: PalindromeTextField(
-                controller: _textController,
-                onChanged: (_) => _checkPalindrome(),
+        child: ConstrainedBox(
+          // constrain maximum width like a responsive CSS container
+          constraints: BoxConstraints(
+            maxWidth: 1024.0,
+            maxHeight: isLandscape ? 320.0 : 480.0,
+          ),
+
+          child: Flex(
+            direction: isLandscape ? Axis.horizontal : Axis.vertical,
+            children: [
+              Expanded(
+                child: PalindromeTextField(
+                  controller: _textController,
+                  onChanged: (_) => _checkPalindrome(),
+                ),
               ),
-            ),
-            // Add a horizontal or vertical space between the text field and the status
-            // depending on the value of isLandscape
-            if (isLandscape) const SizedBox(width: 16.0) else const SizedBox(height: 16.0),
-            Expanded(
-              child: PalindromeStatus(
-                isPalindrome: _isPalindrome,
-                normalizedText: _normalizedText,
+              // Add a horizontal or vertical space between the text field and the status
+              // depending on the value of isLandscape
+              if (isLandscape) const SizedBox(width: 16.0) else const SizedBox(height: 16.0),
+              Expanded(
+                child: PalindromeStatus(
+                  isPalindrome: _isPalindrome,
+                  normalizedText: _normalizedText,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       // floatingActionButton: const SponsorBadge(),

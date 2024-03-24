@@ -24,6 +24,7 @@ class PalindromeTextField extends StatelessWidget {
           ),
         ),
       ),
+      textAlignVertical: TextAlignVertical.top,
       expands: true,
       maxLines: null,
       controller: controller,

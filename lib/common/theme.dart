@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 // A nice unique shade of purple that should evoke a sense of reflection or mirroring and symbolize
 // palindromes
-const Color _accentColor = Color(0xFF6A1B9A);
+// const Color _accentColor = Color(0xFF6A1B9A);
+const Color _accentColor = Color(0xFF6F42C1);
 
+const Color redResultColor = Color(0xFFF7CAC9);
+const Color greenResultColor = Color(0xFF9BEECF);
 const Color sponsorBackgroundColor = Color(0xFF00A4F9);
 
 ThemeData appTheme(Brightness brightness) {

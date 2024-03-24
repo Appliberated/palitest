@@ -4,6 +4,8 @@
 import 'package:flutter/material.dart';
 
 import '../common/strings.dart' as strings;
+import '../common/theme.dart';
+import '../utils/color_utils.dart' as color_utils;
 
 class PalindromeStatus extends StatelessWidget {
   const PalindromeStatus({
@@ -20,27 +22,34 @@ class PalindromeStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color resultBackgroundColor = isPalindrome ? greenResultColor : redResultColor;
+    final Color resultTextColor = color_utils.getContrastColor(resultBackgroundColor);
+
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Card.filled(
-          color: isPalindrome ? Colors.green.shade50 : Colors.red.shade50,
+          color: resultBackgroundColor,
+          margin: EdgeInsets.zero,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               isPalindrome ? strings.isPalindromeText : strings.notPalindromeText,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: isPalindrome ? Colors.green : Colors.red,
-                  ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: resultTextColor),
             ),
           ),
         ),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              normalizedText,
-              style: Theme.of(context).textTheme.bodyLarge,
+        const SizedBox(height: 16.0),
+        Expanded(
+          child: Card(
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                normalizedText,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             ),
           ),
         ),

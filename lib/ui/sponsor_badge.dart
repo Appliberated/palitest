@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 
 import '../common/custom_icons.dart' as custom_icons;
 import '../common/strings.dart' as strings;
+import '../common/theme.dart';
+import '../utils/color_utils.dart' as color_utils;
 
-/// A badge that displays the East-Tec logo and the "Brought to you by" texts.
-///
-/// The badge is clickable and opens the East-Tec website in the default browser.
+/// A clickable badge that displays the East-Tec logo and the "Brought to you by" texts.
 class SponsorBadge extends StatelessWidget {
   /// Creates a new [SponsorBadge].
   const SponsorBadge({
@@ -16,24 +16,20 @@ class SponsorBadge extends StatelessWidget {
     this.onPressed,
   });
 
+  /// The callback that is called when the badge is clicked.
   final void Function()? onPressed;
-
-  // /// Opens the East-Tec website in the default browser.
-  // void _onTap(BuildContext context) {
-  //   // utils.launchUrlExternal(context, app_urls.eastTecBadgeUrl);
-  // }
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = Theme.of(context).colorScheme.primary;
-    final Color foregroundColor = Theme.of(context).colorScheme.onPrimary;
+    const Color backgroundColor = sponsorBackgroundColor;
+    final Color foregroundColor = color_utils.getContrastColor(backgroundColor);
 
     return FloatingActionButton.extended(
+      backgroundColor: backgroundColor,
       icon: Icon(
         custom_icons.eastTecLogoMark,
         color: foregroundColor,
       ),
-      // label: const Text(strings.broughtToYouByWide),
       label: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -49,43 +45,5 @@ class SponsorBadge extends StatelessWidget {
       ),
       onPressed: onPressed,
     );
-
-    // // The badge can be (and should be) clickable.
-    // return InkWell(
-    //   onTap: () => _onTap(context),
-    //   child: Ink(
-    //     // Padding and background color
-    //     padding: EdgeInsets.symmetric(horizontal: isWide ? 20 : 12, vertical: 12),
-    //     color: backgroundColor,
-    //     child: Row(
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: <Widget>[
-    //         // The East-Tec logomark
-    //         Icon(
-    //           custom_icons.eastTecLogoMark,
-    //           color: foregroundColor,
-    //           size: 32.0,
-    //         ),
-
-    //         const SizedBox(width: 8),
-
-    //         // The "Brought to you by" texts
-    //         Column(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: <Widget>[
-    //             Text(
-    //               isWide ? strings.broughtToYouByWide : strings.broughtToYouBy,
-    //               style: Theme.of(context).textTheme.bodySmall!.copyWith(color: foregroundColor),
-    //             ),
-    //             Text(
-    //               isWide ? strings.eastTecWide : strings.eastTec,
-    //               style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: foregroundColor),
-    //             ),
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }
