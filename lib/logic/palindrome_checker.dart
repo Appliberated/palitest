@@ -8,7 +8,7 @@
 /// true, all non-word characters are removed before checking.
 ///
 /// Returns a tuple with the first element as a boolean indicating if the text is a palindrome
-/// and the second element as the processed text.
+/// and the second element as the normalized text used for checking.
 (bool, String) isPalindrome(
   String text, {
   bool ignoreCase = true,
@@ -18,31 +18,30 @@
   // Empty string is considered a palindrome
   if (text.isEmpty) return (true, text);
 
-  String processedText = text;
+  String normalizedText = text;
 
   // Convert to lowercase if needed
   if (ignoreCase) {
-    processedText = processedText.toLowerCase();
+    normalizedText = normalizedText.toLowerCase();
   }
 
   // Remove spaces if needed
   if (ignoreSpacing) {
-    processedText = processedText.replaceAll(RegExp(r"\s+"), "");
+    normalizedText = normalizedText.replaceAll(RegExp(r"\s+"), "");
   }
 
   // Remove non-alphanumeric characters if needed
   if (ignoreNonAlphanumeric) {
-    processedText = processedText.replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
-    // processedText = processedText.replaceAll(RegExp(r"[^\w]"), "");
+    normalizedText = normalizedText.replaceAll(RegExp(r"[^a-zA-Z0-9]"), "");
   }
 
   int left = 0;
-  int right = processedText.length - 1;
+  int right = normalizedText.length - 1;
   bool isPalindrome = true;
 
   // Check if the text is a palindrome
   while (left < right) {
-    if (processedText[left] != processedText[right]) {
+    if (normalizedText[left] != normalizedText[right]) {
       isPalindrome = false;
       break;
     }
@@ -50,5 +49,5 @@
     right--;
   }
 
-  return (isPalindrome, processedText);
+  return (isPalindrome, normalizedText);
 }

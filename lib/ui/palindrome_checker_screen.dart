@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import '../common/settings.dart';
 import '../common/strings.dart' as strings;
 import '../logic/palindrome_checker.dart';
-import 'result_text_widget.dart';
+import 'palindrome_status.dart';
+import 'palindrome_text_field.dart';
 
 class PalindromeCheckerScreen extends StatefulWidget {
   const PalindromeCheckerScreen({super.key});
@@ -18,7 +19,7 @@ class PalindromeCheckerScreen extends StatefulWidget {
 
 class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
   final TextEditingController _textController = TextEditingController();
-  String _processedText = "";
+  String _normalizedText = "";
   bool _isPalindrome = false;
 
   Future<void> _checkPalindrome() async {
@@ -32,7 +33,7 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     );
     setState(() {
       _isPalindrome = palResult.$1;
-      _processedText = palResult.$2;
+      _normalizedText = palResult.$2;
     });
   }
 
@@ -48,6 +49,9 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate isLandscape based on the available screen width and height
+    final bool isLandscape = MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(strings.appTitle),
@@ -61,32 +65,22 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Flex(
+          direction: isLandscape ? Axis.horizontal : Axis.vertical,
           children: [
-            TextField(
-              controller: _textController,
-              decoration: const InputDecoration(hintText: strings.hintText),
-              maxLines: null, // Allow multiline input
-              onChanged: (_) => _checkPalindrome(),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              children: [
-                const Text(strings.processedTextLabel),
-                const SizedBox(width: 8.0),
-                Expanded(child: Text(_processedText)),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: ResultTextWidget(
-                text: _isPalindrome ? strings.isPalindromeText : strings.notPalindromeText,
-                color: _isPalindrome ? Colors.green : Colors.red,
-                animation: const AlwaysStoppedAnimation(1.0),
+            Expanded(
+              child: PalindromeTextField(
+                controller: _textController,
+                onChanged: (_) => _checkPalindrome(),
               ),
             ),
             const SizedBox(height: 16.0),
+            Expanded(
+              child: PalindromeStatus(
+                isPalindrome: _isPalindrome,
+                normalizedText: _normalizedText,
+              ),
+            ),
           ],
         ),
       ),

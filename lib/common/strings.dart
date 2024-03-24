@@ -6,9 +6,10 @@ library;
 
 const String appTitle = "Palindrome Checker";
 const String hintText = "Enter or paste text here to check for palindrome.";
-const String processedTextLabel = "Processed Text:";
-const String isPalindromeText = "Is a Palindrome";
-const String notPalindromeText = "Is not a Palindrome";
+
+const String palindromeStatus = "Palindrome Status";
+const String isPalindromeText = "It's a Palindrome";
+const String notPalindromeText = "Not a Palindrome";
 const String settingsMenuText = "Settings";
 const String ignoreCaseText = "Ignore Case";
 const String ignoreSpacingText = "Ignore Spacing";

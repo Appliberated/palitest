@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 
 import 'common/strings.dart' as strings;
+import 'common/theme.dart';
 import 'ui/palindrome_checker_screen.dart';
 
 void main() async {
@@ -20,10 +21,8 @@ class PaliTestApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: strings.appTitle,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: appTheme(Brightness.light),
+      darkTheme: appTheme(Brightness.dark),
       home: const PalindromeCheckerScreen(),
     );
   }
