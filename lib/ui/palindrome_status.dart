@@ -25,35 +25,39 @@ class PalindromeStatus extends StatelessWidget {
     final Color resultBackgroundColor = isPalindrome ? greenResultColor : redResultColor;
     final Color resultTextColor = color_utils.getContrastColor(resultBackgroundColor);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Card.filled(
-          color: resultBackgroundColor,
-          margin: EdgeInsets.zero,
-          child: Padding(
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.zero,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          // The header with the result text and filled with the result background color
+          Container(
+            color: resultBackgroundColor,
             padding: const EdgeInsets.all(16.0),
             child: Text(
               isPalindrome ? strings.isPalindromeText : strings.notPalindromeText,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(color: resultTextColor),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: resultTextColor,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
-        ),
-        const SizedBox(height: 16.0),
-        Expanded(
-          child: Card(
-            margin: EdgeInsets.zero,
-            child: Padding(
+          // Display the normalized text in a scrollable container to handle long user input
+          Expanded(
+            child: Container(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                normalizedText,
-                style: Theme.of(context).textTheme.bodyLarge,
+              child: SingleChildScrollView(
+                child: Text(
+                  normalizedText,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

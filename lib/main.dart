@@ -7,9 +7,7 @@ import 'common/strings.dart' as strings;
 import 'common/theme.dart';
 import 'ui/palindrome_checker_screen.dart';
 
-void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await SettingsProvider().loadSettings(); // Load settings on startup
+void main() {
   runApp(const PaliTestApp());
 }
 

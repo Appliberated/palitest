@@ -6,12 +6,15 @@ import 'package:flutter/services.dart';
 
 import '../common/settings.dart';
 import '../common/strings.dart' as strings;
+import '../common/theme.dart';
 import '../logic/palindrome_checker.dart';
+import '../utils/utils.dart' as utils;
+import '../common/urls.dart' as urls;
 import 'palindrome_status.dart';
 import 'palindrome_text_field.dart';
 import 'sponsor_badge.dart';
-import '../common/custom_icons.dart' as custom_icons;
 
+/// The main screen of the app that allows the user to check if a text is a palindrome.
 class PalindromeCheckerScreen extends StatefulWidget {
   const PalindromeCheckerScreen({super.key});
 
@@ -21,9 +24,22 @@ class PalindromeCheckerScreen extends StatefulWidget {
 
 class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
   final TextEditingController _textController = TextEditingController();
-  String _normalizedText = "";
-  bool _isPalindrome = false;
 
+  /// Whether the text in the text field is a palindrome.
+  ///
+  /// By default, it's true because an empty string is considered a palindrome.
+  bool _isPalindrome = true;
+
+  /// The normalized user text that is checked for palindrome.
+  String _normalizedText = "";
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
+  /// Checks if the text in the text field is a palindrome and updates the UI.
   Future<void> _checkPalindrome() async {
     final text = _textController.text;
     final settingsProvider = SettingsProvider();
@@ -39,12 +55,11 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     });
   }
 
+  /// Pastes the text from the clipboard into the text field and rechecks for palindrome.
   Future<void> _pasteText() async {
     final text = await Clipboard.getData(Clipboard.kTextPlain);
     if (text?.text != null) {
-      setState(() {
-        _textController.text = text!.text!;
-      });
+      _textController.text = text!.text!;
       _checkPalindrome();
     }
   }
@@ -56,6 +71,7 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     // await SharePlus.instance.share(content, subject: "Palindrome Check Result");
   }
 
+  /// Called when the user taps an app bar icon button or menu item.
   void _appBarAction(_AppBarActions action) {
     switch (action) {
       case _AppBarActions.paste:
@@ -76,41 +92,48 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
     }
   }
 
+  /// Opens the sponsor badge URL in the default external application.
+  void _onSponsorPressed() {
+    utils.launchUrlExternal(context, urls.sponsorBadgeUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Calculate isLandscape based on the available screen width and height
     final bool isLandscape = MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
 
-    // Theme.of(context).colorScheme.
     return Scaffold(
+      // The app bar at the top of the screen
       appBar: _AppBar(
         onAppBarAction: _appBarAction,
         ignoreCase: SettingsProvider().ignoreCase,
         ignoreSpacing: SettingsProvider().ignoreSpacing,
         ignoreNonAlphanumeric: SettingsProvider().ignoreNonAlphanumeric,
       ),
+
+      // The main content of the screen
       body: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(16.0),
+
+        // Constrain the width and height of the content, like a responsive web design container
         child: ConstrainedBox(
-          // constrain maximum width like a responsive CSS container
           constraints: BoxConstraints(
             maxWidth: 1024.0,
             maxHeight: isLandscape ? 320.0 : 480.0,
           ),
-
           child: Flex(
             direction: isLandscape ? Axis.horizontal : Axis.vertical,
-            children: [
+            children: <Widget>[
+              // The text field for entering the text to check
               Expanded(
                 child: PalindromeTextField(
                   controller: _textController,
                   onChanged: (_) => _checkPalindrome(),
                 ),
               ),
-              // Add a horizontal or vertical space between the text field and the status
-              // depending on the value of isLandscape
               if (isLandscape) const SizedBox(width: 16.0) else const SizedBox(height: 16.0),
+
+              // The status card that displays the result and normalized text
               Expanded(
                 child: PalindromeStatus(
                   isPalindrome: _isPalindrome,
@@ -121,30 +144,11 @@ class _PalindromeCheckerScreenState extends State<PalindromeCheckerScreen> {
           ),
         ),
       ),
-      // floatingActionButton: const SponsorBadge(),
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.share),
-      //   onPressed: () => _shareResult(),
-      // ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   icon: const Icon(custom_icons.eastTecLogoMark),
-      //   // label: const Text(strings.broughtToYouByWide),
-      //   label: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: <Widget>[
-      //       Text(
-      //         strings.broughtToYouByWide,
-      //         style: Theme.of(context).textTheme.bodySmall,
-      //       ),
-      //       Text(
-      //         strings.eastTecWide,
-      //         style: Theme.of(context).textTheme.bodyMedium,
-      //       ),
-      //     ],
-      //   ),
-      //   onPressed: () => _shareResult(),
-      // ),
-      floatingActionButton: const SponsorBadge(),
+
+      // The sponsor badge at the bottom right corner
+      floatingActionButton: SponsorBadge(
+        onPressed: _onSponsorPressed,
+      ),
     );
   }
 }
@@ -157,6 +161,7 @@ enum _AppBarActions {
   ignoreNonAlphanumeric,
 }
 
+/// The app bar for the palindrome checker screen.
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   const _AppBar({
     super.key, // ignore: unused_element
@@ -166,8 +171,13 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.ignoreNonAlphanumeric,
   });
 
+  /// The current Ignore Case setting to display in the menu.
   final bool ignoreCase;
+
+  /// The current Ignore Spacing setting to display in the menu.
   final bool ignoreSpacing;
+
+  /// The current Ignore Non-Alphanumeric setting to display in the menu.
   final bool ignoreNonAlphanumeric;
 
   /// Called when the user taps an app bar icon button or menu item.
@@ -175,29 +185,34 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color mainColor = Theme.of(context).colorScheme.secondary;
-
     return AppBar(
+      foregroundColor: Colors.white,
       title: const Text(strings.appTitle),
       actions: <Widget>[
+        // The Paste icon button
         IconButton(
           icon: const Icon(Icons.paste),
+          tooltip: strings.pasteActionTooltip,
           onPressed: () => onAppBarAction?.call(_AppBarActions.paste),
         ),
-        // SettingsMenuWidget(),
         PopupMenuButton<_AppBarActions>(
           onSelected: onAppBarAction,
           itemBuilder: (BuildContext context) => [
+            // The Ignore Case checkbox menu item
             CheckedPopupMenuItem<_AppBarActions>(
               value: _AppBarActions.ignoreCase,
               checked: ignoreCase,
               child: const Text(strings.ignoreCaseText),
             ),
+
+            // The Ignore Spacing checkbox menu item
             CheckedPopupMenuItem<_AppBarActions>(
               value: _AppBarActions.ignoreSpacing,
               checked: ignoreSpacing,
               child: const Text(strings.ignoreSpacingText),
             ),
+
+            // The Ignore Non-Alphanumeric checkbox menu item
             CheckedPopupMenuItem<_AppBarActions>(
               value: _AppBarActions.ignoreNonAlphanumeric,
               checked: ignoreNonAlphanumeric,
@@ -206,13 +221,13 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ],
+
+      // Fill the app bar with a linear gradient that suggests reflection (similar to a palindrome)
       flexibleSpace: Container(
-        decoration: BoxDecoration(
-          // A linear gradient from mainColor to black until half the width of the app bar
-          // and back to mainColor until the end of the app bar, to suggest a sense of reflection
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.black, mainColor, Colors.black],
-            stops: const [0.0, 0.5, 1.0],
+            colors: [Colors.black, accentColor, Colors.black],
+            stops: [0.0, 0.5, 1.0],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),

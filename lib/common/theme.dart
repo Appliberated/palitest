@@ -1,37 +1,30 @@
+// Copyright (c) 2024 Appliberated (https://www.appliberated.com/). All rights reserved.
+// Use of this source code is governed by a user license that can be found in the LICENSE file.
+
 import 'package:flutter/material.dart';
 
-// A nice unique shade of purple that should evoke a sense of reflection or mirroring and symbolize
-// palindromes
-// const Color _accentColor = Color(0xFF6A1B9A);
-const Color _accentColor = Color(0xFF6F42C1);
+/// The accent color used throughout the app.
+///
+/// It's a shade of purple that evokes a sense of reflection or mirroring, which aligns well with
+///  the concept of palindromes (according to Google Gemini at least).
+const Color accentColor = Color(0xFF6F42C1);
 
+/// The color used for the result card when the text is not a palindrome.
 const Color redResultColor = Color(0xFFF7CAC9);
+
+/// The color used for the result card when the text is a palindrome.
 const Color greenResultColor = Color(0xFF9BEECF);
+
+/// The background color of the sponsor badge.
 const Color sponsorBackgroundColor = Color(0xFF00A4F9);
 
+/// Returns the app theme for the given brightness.
 ThemeData appTheme(Brightness brightness) {
-  // A color that is white in the light theme and black in the dark theme
-  final Color lightWhiteDarkBlack = brightness == Brightness.light ? Colors.white : Colors.black;
-
-  // A color that is black in the light theme and white in the dark theme
-  final Color lightBlackDarkWhite = brightness == Brightness.light ? Colors.black : Colors.white;
-
   final ColorScheme colorScheme = ColorScheme.fromSeed(
-    seedColor: _accentColor,
+    seedColor: accentColor,
     brightness: brightness,
-    secondary: _accentColor,
   );
   return ThemeData.from(
     colorScheme: colorScheme,
-    // textTheme: Typography.material2018().black,
-  ).copyWith(
-    appBarTheme: const AppBarTheme(
-      backgroundColor: _accentColor,
-      foregroundColor: Colors.white,
-    ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: _accentColor,
-      foregroundColor: Colors.white,
-    ),
   );
 }

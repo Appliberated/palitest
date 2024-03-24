@@ -4,20 +4,19 @@
 /// Contains all the user interface strings used in the app.
 library;
 
-// const String appTitle = "Palindrome Checker";
-const String appTitle = "PaliTest - Palindrome Checker";
-const String hintText = "Enter or paste text here to check for palindrome.";
+const String appTitle = "Palitest Palindrome Checker";
 
-const String palindromeStatus = "Palindrome Status";
-const String isPalindromeText = "It's a Palindrome";
-const String notPalindromeText = "Not a Palindrome";
-const String settingsMenuText = "Settings";
+// Palindrome checker screen
+
+const String hintText = "Enter or paste text here to check for palindrome.";
+const String isPalindromeText = "It's a palindrome!";
+const String notPalindromeText = "Not a palindrome";
 const String ignoreCaseText = "Ignore Case";
 const String ignoreSpacingText = "Ignore Spacing";
 const String ignoreNonAlphanumeric = "Ignore Non-Alphanumeric";
 const String showExamplesText = "Show Palindrome Examples";
-const String pasteButtonText = "Paste";
-const String shareButtonText = "Share";
+const String pasteActionTooltip = "Paste";
+const String shareActionTooltip = "Share";
 
 // Sponsor badge
 
